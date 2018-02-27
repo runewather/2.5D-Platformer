@@ -8,7 +8,15 @@ namespace RuneInputSystem
 	{
 		private static Input instance = null;
 		public static Input Instance { get{ return instance; } }
-		//private Axis axis;
+
+		[Header("Key Binding GUI")]
+		[SerializeField]
+		private bool InitKeyBindingGUI = false;
+		[SerializeField]
+		private CommandRow[] CommandRows;
+		private Key selectedKey = null;
+		private CommandRow selectedCommand;
+		private bool isAlt = false;
 
 		[SerializeField]
 		private Key[] keys;
@@ -24,6 +32,34 @@ namespace RuneInputSystem
 				Destroy(gameObject);
 			}
 			DontDestroyOnLoad(gameObject);
+		}
+
+		private void KeyBindingGUI()
+		{
+			int count = 0;
+			foreach(CommandRow c in CommandRows)
+			{
+				c.BindKeyToButton(keys[count]);
+				count++;
+			}
+		}
+
+		private void Start() 
+		{
+			if(InitKeyBindingGUI)
+			{
+				KeyBindingGUI();
+			}
+		}
+
+		public float GetJoystickHorizontalAxis()
+		{
+			return UnityEngine.Input.GetAxisRaw("Horizontal");
+		}
+
+		public float GetJoystickVerticalAxis()
+		{
+			return UnityEngine.Input.GetAxisRaw("Vertical");
 		}
 
 		public bool GetKey(string key)
@@ -60,6 +96,35 @@ namespace RuneInputSystem
 				}
 			}
 			return false;
+		}
+
+		void OnGUI()
+		{
+			if(selectedKey != null)
+			{
+				Event e = Event.current;
+				if(e.isKey)
+				{					
+					if(!isAlt)
+					{
+						selectedKey.key = e.keyCode;
+					}
+					else
+					{
+						selectedKey.altKey = e.keyCode;
+					}
+					selectedCommand.BindKeyToButton(selectedKey);
+					selectedCommand = null;
+					selectedKey = null;					
+				}				
+			}
+		}
+
+		public void SelectKey(Key k, CommandRow c , bool isAlt)
+		{
+			selectedKey = k;
+			selectedCommand = c;
+			this.isAlt = isAlt;
 		}
 	}
 }

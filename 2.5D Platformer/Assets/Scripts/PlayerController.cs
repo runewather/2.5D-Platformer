@@ -13,13 +13,14 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(RuneInputSystem.Input.Instance.GetKey("MoveLeft"))
+		if(RuneInputSystem.Input.Instance.GetKey("Move Left"))
 		{
 			rb.MovePosition(rb.position + Vector3.right * -3.0f * Time.deltaTime);
 		}
-		if(RuneInputSystem.Input.Instance.GetKey("MoveRight"))
+		if(RuneInputSystem.Input.Instance.GetKey("Move Right"))
 		{
 			rb.MovePosition(rb.position + Vector3.right * 3.0f * Time.deltaTime);
 		}
+		Debug.Log(Input.GetAxis("Horizontal"));
 	}
 }
