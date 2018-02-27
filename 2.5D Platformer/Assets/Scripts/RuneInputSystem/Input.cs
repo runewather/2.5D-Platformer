@@ -114,6 +114,7 @@ namespace RuneInputSystem
 						selectedKey.altKey = e.keyCode;
 					}
 					selectedCommand.BindKeyToButton(selectedKey);
+					selectedCommand.DeselectButton(isAlt);
 					selectedCommand = null;
 					selectedKey = null;					
 				}				
@@ -122,9 +123,17 @@ namespace RuneInputSystem
 
 		public void SelectKey(Key k, CommandRow c , bool isAlt)
 		{
+			if(selectedCommand != null)
+			{
+				selectedCommand.DeselectButton(this.isAlt);
+			}
+			selectedKey = null;
+			selectedCommand = null;
+			
 			selectedKey = k;
 			selectedCommand = c;
 			this.isAlt = isAlt;
+			c.SelectedButton(isAlt);
 		}
 	}
 }

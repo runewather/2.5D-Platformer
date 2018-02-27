@@ -24,6 +24,30 @@ namespace RuneInputSystem
 		public Text AltButtonText { get{ return altButtonText;}}
 		private Key key;
 		
+		public void SelectedButton(bool isAlt)
+		{
+			if(!isAlt)
+			{
+				button.image.color = Color.blue;
+			}
+			else
+			{
+				altButton.image.color = Color.blue;
+			}
+		}
+
+		public void DeselectButton(bool isAlt)
+		{
+			if(!isAlt)
+			{
+				button.image.color = Color.white;
+			}
+			else
+			{
+				altButton.image.color = Color.white;
+			}
+		}
+
 		public void OnClickBtn()
 		{
 			Input.Instance.SelectKey(key, this, false);
