@@ -16,11 +16,11 @@ public class PlayerInput : MonoBehaviour {
 	{
 		if(RuneInputSystem.Input.Instance.GetKey("Move Left"))
 		{
-			pc.HorizontalMovement.MoveLeft();
+			pc.HorizontalMove("Left");
 		}
 		if(RuneInputSystem.Input.Instance.GetKey("Move Right"))
 		{
-			pc.HorizontalMovement.MoveRight();
+			pc.HorizontalMove("Right");
 		}
 	}
 
@@ -28,7 +28,15 @@ public class PlayerInput : MonoBehaviour {
 	{
 		if(RuneInputSystem.Input.Instance.GetKeyDown("Jump"))
 		{
-			pc.Jump.JumpAction();
+			pc.Jump();
+		}
+		if(RuneInputSystem.Input.Instance.GetKeyDown("Dash"))
+		{
+			pc.Dash();
+		}
+		if(RuneInputSystem.Input.Instance.GetKeyDown("Gravity"))
+		{
+			pc.InvertGravity();
 		}
 	}
 

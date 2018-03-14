@@ -1,20 +1,66 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Profiling;
+using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour {
 
-	private Rigidbody rb;
-	private HorizontalMovement horizontalMovement;
-	public Rigidbody Rb { get { return rb;} }
-	public HorizontalMovement HorizontalMovement { get {return horizontalMovement;}}
+	private HorizontalMovement hm;
 	private Jump jump;
-	public Jump Jump { get { return jump; } }
-	
-	void Start () {
-		rb = GetComponent<Rigidbody>();
-		horizontalMovement = GetComponent<HorizontalMovement>();
+	private Dash dash;
+	private GravityInversion gi;
+	private Health health;
+	private string lastSide = "Right";
+
+	void Start()
+	{
+		hm = GetComponent<HorizontalMovement>();
+		dash = GetComponent<Dash>();
 		jump = GetComponent<Jump>();
+		gi = GetComponent<GravityInversion>();
+		health = GetComponent<Health>();
 	}
+
+	public void HorizontalMove(string side)
+	{
+		if(!dash.IsDashing)
+		{
+			lastSide = side;
+			hm.HorizontalMovementAction(side);
+		}
+	}
+
+	public void Dash()
+	{
+		dash.DashAction(lastSide);
+		StartCoroutine(Invunerable());
+	}
+
+	public void Jump()
+	{
+		if(!dash.IsDashing)
+		{
+			jump.JumpAction();
+		}
+	}
+
+	public void InvertGravity()
+	{
+		if(!dash.IsDashing)
+		{			
+			gi.InvertGravity();
+			jump.InvertForce();
+		}
+	}
+	
+	IEnumerator Invunerable()
+	{
+		health.SetInvunerable(true);
+		while(dash.IsDashing)
+		{
+			yield return null;
+		}
+		health.SetInvunerable(false);
+	}
+
 }

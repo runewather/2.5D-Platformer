@@ -2,25 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerController))]
+[RequireComponent(typeof(Rigidbody))]
 public class HorizontalMovement : MonoBehaviour {
-
-	private PlayerController pc;
 	[SerializeField]
 	private float speed;
-	public float Speed { get { return speed; } }
+	private Rigidbody rb;
 
-	void Start()
+	private void Start() 
 	{
-		pc = GetComponent<PlayerController>();
+		rb = GetComponent<Rigidbody>();
 	}
 
-	public void MoveRight()
+	public void HorizontalMovementAction(string side)
 	{
-		pc.Rb.MovePosition(pc.Rb.position + (Vector3.right * speed * Time.deltaTime));
-	}
-	public  void MoveLeft()
-	{
-		pc.Rb.MovePosition(pc.Rb.position + (Vector3.right * -speed * Time.deltaTime));
+		Vector3 velocity = Vector3.zero;
+		if(side.Equals("Right"))
+		{
+			transform.eulerAngles = new Vector3(transform.eulerAngles.x, 90.0f, transform.eulerAngles.z);	
+			velocity = Vector3.right * speed * Time.deltaTime;
+		}	
+		else if(side.Equals("Left"))
+		{
+			transform.eulerAngles = new Vector3(transform.eulerAngles.x, -90.0f, transform.eulerAngles.z);	
+			velocity = Vector3.left * speed * Time.deltaTime;
+		}	
+		rb.MovePosition(rb.position + velocity);
 	}
 }
